@@ -25,7 +25,7 @@ int minishell_stand_imput(int fd)
 
     buffer[4096] = '\0';
     while (read_var > 0 && exit == 0) {
-        my_putstr("#>");
+        my_putstr("#> ");
         reset_buffer(buffer, read_var);
         read_var = read(fd, buffer, 4096);
         if(read_var > 0) {
