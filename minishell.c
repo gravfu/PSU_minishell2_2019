@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "include/my.h"
+#include <stdlib.h>
 
 int minishell_text(int ac, char **av);
 int minishell_command(char *str, int read_var);
@@ -20,17 +21,18 @@ int minishell_stand_imput(int fd)
 {
     int read_var = 1;
     int exit = 0;
-    char buffer[4097];
+    char *buffer = malloc(sizeof(char) * 4097);
 
     buffer[4096] = '\0';
     while (read_var > 0 && exit == 0) {
-        my_putstr("?>");
+        my_putstr("#>");
         reset_buffer(buffer, read_var);
         read_var = read(fd, buffer, 4096);
         if(read_var > 0) {
             exit = minishell_command(buffer, read_var);
         }
     }
+    free(buffer);
     return 0;
 }
 
