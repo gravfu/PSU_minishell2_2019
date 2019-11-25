@@ -42,8 +42,10 @@ int minishell_execute(char *possible_path)
 
 int minishell_exit(char *str)
 {
-    if (my_strcmp("exit", str) == 0)
+    if (my_strcmp("exit", str) == 0) {
+        my_putstr("exit\n");
         return 1;
+    }
     return 0;
 }
 
