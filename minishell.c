@@ -13,7 +13,7 @@
 #include "include/my.h"
 
 int minishell_text(int ac, char **av);
-int minishell_command(char *str);
+int minishell_command(char *str, int read_var);
 void reset_buffer(char *buffer, int size);
 
 int minishell_stand_imput(int fd)
@@ -28,9 +28,8 @@ int minishell_stand_imput(int fd)
         reset_buffer(buffer, read_var);
         read_var = read(fd, buffer, 4096);
         if(read_var > 0) {
-            exit = minishell_command(buffer);
+            exit = minishell_command(buffer, read_var);
         }
-        //write(1, buffer, read_var);
     }
     return 0;
 }
