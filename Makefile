@@ -13,7 +13,8 @@ MAIN		=	main.c
 
 SRC		=	minishell.c \
 			minishell_text.c \
-			minishell_tools.c
+			minishell_tools.c \
+			minishell_command.c
 
 OBJ     	=       $(SRC:.c=.o) $(MAIN:.c=.o)
 
