@@ -48,15 +48,7 @@ char **read_commands(char *buffer, int readsize)
             for(; buffer[i] != '\n' && buffer[i] != ' ' && i < readsize; i++);
         }
     }
-    /*
-    while (buffer[i-1] != '\n') {
-        argv[point] = new_cmd(&buffer[i]);
-        point++;
-        for (; buffer[i] != '\n' && buffer[i] != ' '; i++);
-        i++;
-    }*/
     argv[point] = NULL;
-    //my_show_word_array(argv);
     return argv;
 }
 
