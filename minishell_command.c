@@ -31,11 +31,13 @@ int minishell_execute(char *possible_path)
 {
     struct stat st;
     int pass;
+    char *newargv[] = { NULL };
+    char *newenviron[] = { NULL };
 
     pass = char_in_array('/', possible_path);
     if (stat(possible_path, &st) == 0) {
         if ((st.st_mode & S_IXUSR) && (st.st_mode & __S_IFREG) && pass)
-            my_putstr("SUCESS\n");
+            execve(possible_path, newargv, newenviron);
     }
     return 0;
 }
@@ -49,14 +51,13 @@ int minishell_exit(char *str)
     return 0;
 }
 
-int minishell_command(char *str, int read_var)
+int minishell_command(char **argv, int read_var)
 {
-    str[read_var-1] = '\0';
-    if(minishell_exit(str) == 1)
+    if(minishell_exit(argv[0]) == 1)
         return 1;
-    if(minishell_execute(str) == 1)
+    if(minishell_execute(argv[0]) == 1)
         return 1;
-    if(minishell_cat(str, read_var) == 1)
+    if(minishell_cat(argv[0], read_var) == 1)
         return 84;
     return 0;
 }
