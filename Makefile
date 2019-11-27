@@ -59,7 +59,6 @@ tests_run:	$(OBJ_TEST)
 		$(CC) $(FLAGS) -o $(TEST_NAME) $(OBJ_TEST) $(TEST_FLAG) -I$(INCLUDE) -L$(LIB_FOLDER) -l$(LIB_NAME) && ./$(TEST_NAME)
 
 re:		fclean all
-		cd $(LIB_FOLDER) && make re
 
 auteur:
 		echo $(USER) > auteur

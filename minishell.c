@@ -17,33 +17,46 @@ int minishell_text(int ac, char **av);
 int minishell_command(char **str, int read_var);
 void reset_buffer(char *buffer, int size);
 
+int boucle = 0;
+
 char *new_cmd(char *str)
 {
-    if (str[0] == '\n' || str[0] == '\0')
-        return NULL;
+    /*if (str[0] == '\n' || str[0] == '\0')
+        return NULL; */
     int i;
     char *cmd = malloc(sizeof(char) * 400);
 
-    for (i = 0; str[i] != '\n' && str[i] != ' '; i++) {
+    for (i = 0; str[i] != '\n' && str[i] != ' ' && str[i] != '\0'; i++) {
         cmd[i] = str[i];
+        //printf("Boucle %d, str[i] = %c\n", boucle, str[i]);
     }
     cmd[i] = '\0';
+    boucle++;
     return cmd;
 }
 
-char **read_commands(char *buffer)
+char **read_commands(char *buffer, int readsize)
 {
-    int i = 0;
+    int i = 1;
     int point = 0;
     char **argv = malloc(sizeof(char *) * 4096);
 
+    for(i = 0; i < readsize; i++) {
+        if (buffer[i] != '\n' && buffer[i] != ' ') {
+            argv[point] = new_cmd(&buffer[i]);
+            point++;
+            for(; buffer[i] != '\n' && buffer[i] != ' ' && i < readsize; i++);
+        }
+    }
+    /*
     while (buffer[i-1] != '\n') {
         argv[point] = new_cmd(&buffer[i]);
         point++;
         for (; buffer[i] != '\n' && buffer[i] != ' '; i++);
         i++;
-    }
+    }*/
     argv[point] = NULL;
+    //my_show_word_array(argv);
     return argv;
 }
 
@@ -60,7 +73,7 @@ int minishell_stand_imput(int fd)
         reset_buffer(buffer, read_var);
         read_var = read(fd, buffer, 4096);
         if(read_var > 0) {
-            argv = read_commands(buffer);
+            argv = read_commands(buffer, read_var);
             exit = minishell_command(argv, read_var);
         }
     }
