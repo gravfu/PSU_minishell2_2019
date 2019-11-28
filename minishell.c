@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 int minishell_text(int ac, char **av);
-int minishell_command(char **str, int read_var);
+int minishell_command(char **str, int read_var, char *path);
 void reset_buffer(char *buffer, int size);
 
 int boucle = 0;

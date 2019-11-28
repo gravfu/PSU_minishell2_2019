@@ -53,7 +53,7 @@ int minishell_exit(char **str)
     return 0;
 }
 
-int minishell_command(char **argv, int read_var)
+int minishell_command(char **argv, int read_var, char *path)
 {
     if(minishell_exit(argv) == 1)
         return 1;
