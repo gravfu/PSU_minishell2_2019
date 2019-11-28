@@ -21,14 +21,11 @@ int boucle = 0;
 
 char *new_cmd(char *str)
 {
-    /*if (str[0] == '\n' || str[0] == '\0')
-        return NULL; */
     int i;
     char *cmd = malloc(sizeof(char) * 400);
 
     for (i = 0; str[i] != '\n' && str[i] != ' ' && str[i] != '\0'; i++) {
         cmd[i] = str[i];
-        //printf("Boucle %d, str[i] = %c\n", boucle, str[i]);
     }
     cmd[i] = '\0';
     boucle++;
@@ -64,7 +61,7 @@ int minishell_stand_imput(int fd)
         my_putstr("#> ");
         reset_buffer(buffer, read_var);
         read_var = read(fd, buffer, 4096);
-        if(read_var > 0) {
+        if(read_var > 1) {
             argv = read_commands(buffer, read_var);
             exit = minishell_command(argv, read_var);
         }

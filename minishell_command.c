@@ -42,19 +42,21 @@ int minishell_execute(char **possible_path)
     return 0;
 }
 
-void minishell_exit(char **str)
+int minishell_exit(char **str)
 {
     if (my_strcmp("exit", str[0]) == 0) {
         my_putstr("exit\n");
         if (str[1] != NULL)
             exit(my_getnbr(str[1]));
-        exit(0);
+        return 1;
     }
+    return 0;
 }
 
 int minishell_command(char **argv, int read_var)
 {
-    minishell_exit(argv);
+    if(minishell_exit(argv) == 1)
+        return 1;
     if(minishell_execute(argv) == 1)
         return 1;
     if(minishell_cat(argv, read_var) == 1)
