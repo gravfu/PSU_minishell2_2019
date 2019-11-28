@@ -9,7 +9,12 @@
 #include "include/my.h"
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
+
+int my_error_handle(char *av, int error);
+
+char *my_cat(char *str1, char *str2);
 
 int minishell_cat(char **str, int read_var)
 {
@@ -27,17 +32,24 @@ int char_in_array(char c, char *str)
     return 0;
 }
 
-int minishell_execute(char **possible_path)
+int minishell_execute(char **argv, char *path)
 {
     struct stat st;
-    int pass;
     char *newargv[] = { NULL };
     char *newenviron[] = { NULL };
+    char *final_path;
+    if (argv[0][0] == '/')
+        final_path = argv[0];
+    else
+        final_path = my_cat(my_cat(path, "/"), argv[0]);
 
-    pass = char_in_array('/', possible_path[0]);
-    if (stat(possible_path[0], &st) == 0) {
-        if ((st.st_mode & S_IXUSR) && (st.st_mode & __S_IFREG) && pass)
-            execve(possible_path[0], newargv, newenviron);
+    if (stat(argv[0], &st) == 0 && char_in_array('/', argv[0])) {
+        if ((st.st_mode & S_IXUSR) && (st.st_mode & __S_IFREG)) {
+            execve(final_path, newargv, newenviron);
+        }
+    }
+    else {
+        my_error_handle(argv[0], 127);
     }
     return 0;
 }
@@ -57,7 +69,7 @@ int minishell_command(char **argv, int read_var, char *path)
 {
     if(minishell_exit(argv) == 1)
         return 1;
-    if(minishell_execute(argv) == 1)
+    if(minishell_execute(argv, path) == 1)
         return 1;
     if(minishell_cat(argv, read_var) == 1)
         return 84;

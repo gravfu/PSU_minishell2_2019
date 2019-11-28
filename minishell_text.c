@@ -31,7 +31,6 @@ int my_putstr_error(char const *str)
 
 int my_error_handle(char *av, int error)
 {
-    my_putstr_error("cat: ");
     if (error == 13) {
         my_putstr_error(av);
         my_putstr_error(": Permission denied\n");
@@ -45,6 +44,11 @@ int my_error_handle(char *av, int error)
     if (error == 21) {
         my_putstr_error(av);
         my_putstr_error(": Is a directory\n");
+        return 84;
+    }
+    if (error == 127) {
+        my_putstr_error(av);
+        my_putstr_error(": Command not found.\n");
         return 84;
     }
     if (error != 0)
