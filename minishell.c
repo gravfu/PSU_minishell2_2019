@@ -63,14 +63,14 @@ int minishell_stand_imput(int fd)
         read_var = read(fd, buffer, 4096);
         if(read_var > 1) {
             argv = read_commands(buffer, read_var);
-            exit = minishell_command(argv, read_var);
+            exit = minishell_command(argv, read_var, ".");
         }
     }
     free(buffer);
     return 0;
 }
 
-int minishell(int ac, char **av)
+int minishell(int ac, char **av, char **env_path)
 {
     if (ac == 1)
         return minishell_stand_imput(0);
