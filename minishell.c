@@ -10,14 +10,13 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "include/my.h"
 #include <stdlib.h>
+#include "include/my.h"
+#include "include/env.h"
 
 int minishell_text(int ac, char **av);
 int minishell_command(char **str, int read_var, char *path);
 void reset_buffer(char *buffer, int size);
-
-int boucle = 0;
 
 char *new_cmd(char *str)
 {
@@ -28,7 +27,6 @@ char *new_cmd(char *str)
         cmd[i] = str[i];
     }
     cmd[i] = '\0';
-    boucle++;
     return cmd;
 }
 
@@ -49,7 +47,7 @@ char **read_commands(char *buffer, int readsize)
     return argv;
 }
 
-int minishell_stand_imput(int fd)
+int minishell_stand_imput(int fd, env_struct *env)
 {
     int read_var = 1;
     int exit = 0;
@@ -63,7 +61,7 @@ int minishell_stand_imput(int fd)
         read_var = read(fd, buffer, 4096);
         if(read_var > 1) {
             argv = read_commands(buffer, read_var);
-            exit = minishell_command(argv, read_var, ".");
+            exit = minishell_command(argv, read_var, env);
         }
     }
     free(buffer);
@@ -72,8 +70,10 @@ int minishell_stand_imput(int fd)
 
 int minishell(int ac, char **av, char **env_path)
 {
+    env_struct *env = env_struct_init(env_path);
+
     if (ac == 1)
-        return minishell_stand_imput(0);
+        return minishell_stand_imput(0, env);
     else if (ac > 1)
         return minishell_text(ac, av);
     else

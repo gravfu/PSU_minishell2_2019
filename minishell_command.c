@@ -6,22 +6,16 @@
 */
 
 #include <stdlib.h>
-#include "include/my.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "include/my.h"
+#include "include/env.h"
 
 int my_error_handle(char *av, int error);
 
 char *my_cat(char *str1, char *str2);
-
-int minishell_cat(char **str, int read_var)
-{
-    if (my_strncmp("cat", str[0], 4) == 0)
-        write(1, str, read_var);
-    return 0;
-}
 
 int char_in_array(char c, char *str)
 {
@@ -65,13 +59,11 @@ int minishell_exit(char **str)
     return 0;
 }
 
-int minishell_command(char **argv, int read_var, char *path)
+int minishell_command(char **argv, int read_var, env_struct *env)
 {
     if(minishell_exit(argv) == 1)
         return 1;
-    if(minishell_execute(argv, path) == 1)
+    if(minishell_execute(argv, ".") == 1)
         return 1;
-    if(minishell_cat(argv, read_var) == 1)
-        return 84;
     return 0;
 }
