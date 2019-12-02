@@ -15,7 +15,7 @@
 #include "include/env.h"
 
 int minishell_text(int ac, char **av);
-int *minishell_command(char **str, int read_var, env_struct *env, int prev);
+int *minishell_command(char **str, int read_var, char **env, int prev);
 void reset_buffer(char *buffer, int size);
 
 char *new_cmd(char *str)
@@ -47,7 +47,7 @@ char **read_commands(char *buffer, int readsize)
     return argv;
 }
 
-int minishell_stand_imput(int fd, env_struct *env)
+int minishell_stand_imput(int fd, char **env)
 {
     int read_var = 1;
     int *exit_codes = malloc(sizeof(int)*2);
@@ -72,7 +72,7 @@ int minishell_stand_imput(int fd, env_struct *env)
 
 int minishell(int ac, char **av, char **env_path)
 {
-    env_struct *env = env_struct_init(env_path);
+    char **env = env_struct_init(env_path);
 
     if (ac == 1)
         return minishell_stand_imput(0, env);

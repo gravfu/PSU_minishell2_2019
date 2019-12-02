@@ -11,5 +11,5 @@ typedef struct env_struct {
     struct env_struct *next;
 } env_struct;
 
-int env_print(env_struct *env_table);
-env_struct *env_struct_init(char **env_table);
+int env_print(char **env_table);
+char **env_struct_init(char **env_table);

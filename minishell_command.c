@@ -50,7 +50,7 @@ int minishell_execute(char **argv, char *path)
     return exit_code;
 }
 
-int *minishell_command(char **argv, int read_var, env_struct *env, int prev)
+int *minishell_command(char **argv, int read_var, char **env, int prev)
 {
     int *exit_codes = malloc(sizeof(int)*2);
     exit_codes[0] = 0;
