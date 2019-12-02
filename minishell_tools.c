@@ -29,3 +29,12 @@ char *my_cat(char *str1, char *str2)
     new_str[i] = '\0';
     return new_str;
 }
+
+int char_in_array(char c, char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == c)
+            return 1;
+    }
+    return 0;
+}

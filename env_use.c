@@ -10,7 +10,7 @@
 #include "include/my.h"
 #include "include/env.h"
 
-int set_content(char *str)
+char **set_content(char *str)
 {
     int j = 0;
     char **content = NULL;

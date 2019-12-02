@@ -15,7 +15,7 @@
 #include "include/env.h"
 
 int minishell_text(int ac, char **av);
-int minishell_command(char **str, int read_var, char *path);
+int *minishell_command(char **str, int read_var, env_struct *env, int prev);
 void reset_buffer(char *buffer, int size);
 
 char *new_cmd(char *str)
@@ -50,22 +50,24 @@ char **read_commands(char *buffer, int readsize)
 int minishell_stand_imput(int fd, env_struct *env)
 {
     int read_var = 1;
-    int exit = 0;
+    int *exit_codes = malloc(sizeof(int)*2);
     char *buffer = malloc(sizeof(char) * 4097);
     char **argv;
 
     buffer[4096] = '\0';
-    while (read_var > 0 && exit == 0) {
+    exit_codes[0] = 0;
+    exit_codes[1] = 0;
+    while (read_var > 0 && exit_codes[0] == 0) {
         my_putstr("#> ");
         reset_buffer(buffer, read_var);
         read_var = read(fd, buffer, 4096);
         if(read_var > 1) {
             argv = read_commands(buffer, read_var);
-            exit = minishell_command(argv, read_var, env);
+            exit_codes = minishell_command(argv, read_var, env, exit_codes[1]);
         }
     }
     free(buffer);
-    return 0;
+    return exit_codes[1];
 }
 
 int minishell(int ac, char **av, char **env_path)
