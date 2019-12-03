@@ -53,7 +53,6 @@ int minishell_execute(char **argv, char *path)
 int env_exec (char **argv, char **env)
 {
     int error = 84;
-
     if (!(my_strcmp("env", argv[0])) && argv[1] == NULL) {
         env_print(env);
         error = 0;
@@ -65,6 +64,8 @@ int env_exec (char **argv, char **env)
     if (!(my_strcmp("unset", argv[0])) && argv[1] && !argv[2]) {
         error = searsh_and_del_in_env(env, argv[1]);
     }
+    if (!(my_strcmp("cd", argv[0])))
+        error = my_cd(argv, env);
     return error;
 }
 
@@ -81,7 +82,7 @@ int *minishell_command(char **argv, int read_var, char **env, int prev)
         else
             exit_codes[1] = prev;
     } else if (!(my_strcmp("env", argv[0])) || !(my_strcmp("set", argv[0]))
-                || !(my_strcmp("unset", argv[0])))
+                || !(my_strcmp("unset", argv[0])) || !(my_strcmp("cd", argv[0])))
         exit_codes[1] = env_exec(argv, env);
     else
         exit_codes[1] = minishell_execute(argv, ".");

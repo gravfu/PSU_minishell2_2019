@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
 #include "include/my.h"
 
 int minishell_stand_imput(int fd);
@@ -29,30 +30,15 @@ int my_putstr_error(char const *str)
     return (0);
 }
 
-int my_error_handle(char *av, int error)
+int my_error_handle(char *command, char *not_found, int error)
 {
-    if (error == 13) {
-        my_putstr_error(av);
-        my_putstr_error(": Permission denied\n");
-        return 84;
-    }
-    if (error == 2) {
-        my_putstr_error(av);
-        my_putstr_error(": No such file or directory\n");
-        return 84;
-    }
-    if (error == 21) {
-        my_putstr_error(av);
-        my_putstr_error(": Is a directory\n");
-        return 84;
-    }
-    if (error == 127) {
-        my_putstr_error(av);
-        my_putstr_error(": Command not found.\n");
-        return 84;
-    }
-    if (error != 0)
-        my_put_nbr(error);
+    my_putstr_error("mysh: ");
+    my_putstr_error(command);
+    my_putstr_error(": ");
+    my_putstr_error(not_found);
+    my_putstr(": ");
+    my_putstr(strerror(errno));
+    my_putchar('\n');
     return 84;
 }
 
@@ -67,7 +53,7 @@ int minishell_text(int ac, char **av)
         errno = 0;
         fd = open(av[i], O_RDONLY);
         if (fd == -1) {
-            error = my_error_handle(av[i], errno);
+            error = my_error_handle(av[i], "my_ls", errno);
         } else {
             minishell_stand_imput(fd);
             close(fd);

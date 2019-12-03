@@ -1,21 +1,25 @@
-
+/*
+** EPITECH PROJECT, 2019
+** cd.c
+** File description:
+** cat texts
+*/
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <string.h>
 #include "include/my.h"
+#include "include/error.h"
 
-int path(char **argv, int argc, char *the_path)
+int my_cd(char **argv, char **env)
 {
-    if (the_path == NULL) {
-        the_path = malloc(sizeof(char) * 2);
-        the_path[0] = '.';
-        the_path[1] = '\0';
+    char cwd[1024];
+    errno = 0;
+
+    if (chdir(argv[1]) != 0) {
+        my_error_handle("cd", argv[1], errno);
+        return 84;
     }
-    if (argv[2] == NULL) {
-        the_path[0] = '~';
-        the_path[1] = '\0';
-    }
-    if (argv[2][0] == '/')
-    my_strcat(the_path, "/");
-    my_strcat(the_path, argv[2])
+    getcwd(cwd, sizeof(cwd));
 }

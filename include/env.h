@@ -12,3 +12,4 @@ char **searsh_and_add_in_env(char **env, char *first,
                             char const *to_add);
 int searsh_and_del_in_env(char **env, char const *first);
 int env_len_name(char *str);
+int my_cd(char **argv, char **env);
