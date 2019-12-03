@@ -73,7 +73,6 @@ int minishell_stand_imput(int fd, char **env)
 int minishell(int ac, char **av, char **env_path)
 {
     char **env = env_struct_init(env_path);
-
     if (ac == 1)
         return minishell_stand_imput(0, env);
     else if (ac > 1)

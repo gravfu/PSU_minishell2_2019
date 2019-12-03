@@ -8,7 +8,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "include/my.h"
-#include "include/env.h"
 
 int env_len_name(char *str);
 
@@ -58,6 +57,7 @@ int env_print(char **table)
 {
     for (int i = 0; table[i] != NULL; i++){
         my_putstr(table[i]);
+        my_putchar('\n');
     }
     return 0;
 }

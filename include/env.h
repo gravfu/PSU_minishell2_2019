@@ -1,15 +1,14 @@
 /*
 ** EPITECH PROJECT, 2019
-** my_cat_text.c
+** env.h
 ** File description:
-** cat texts
+** every functions of libmy
 */
 
-typedef struct env_struct {
-    char *NAME;
-    char **content;
-    struct env_struct *next;
-} env_struct;
-
-int env_print(char **env_table);
+char **searsh_in_env(char **env, char const *to_search);
+int env_print(char **table);
 char **env_struct_init(char **env_table);
+char **searsh_and_add_in_env(char **env, char *first,
+                            char const *to_add);
+int searsh_and_del_in_env(char **env, char const *first);
+int env_len_name(char *str);

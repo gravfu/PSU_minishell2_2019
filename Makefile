@@ -16,6 +16,7 @@ SRC		=	minishell.c \
 			minishell_tools.c \
 			minishell_command.c \
 			env_init.c \
+			env_set.c \
 			env_use.c
 
 OBJ     	=       $(SRC:.c=.o) $(MAIN:.c=.o)

@@ -3,7 +3,7 @@
 #include "include/env.h"
 #include "include/my.h"
 
-char **searsh_and_add_in_env(char **env, char const *first, char const *to_add)
+char **searsh_and_add_in_env(char **env, char *first, char const *to_add)
 {
     int i;
     int len_word;
@@ -23,7 +23,7 @@ char **searsh_and_add_in_env(char **env, char const *first, char const *to_add)
     return env;
 }
 
-int searsh_and_del_in_env(char **env, char const *first, char const *to_del)
+int searsh_and_del_in_env(char **env, char const *first)
 {
     int i;
     int len_word;
