@@ -12,8 +12,7 @@
 #include <unistd.h>
 #include "include/my.h"
 #include "include/env.h"
-
-int my_error_handle(char *av, int error);
+#include "include/error.h"
 
 char *my_cat(char *str1, char *str2);
 
@@ -44,7 +43,7 @@ int minishell_execute(char **argv, char *path)
         }
     }
     else {
-        my_error_handle(argv[0], 127);
+        my_error_handle("", argv[0], 127);
         exit_code = 127;
     }
     return exit_code;

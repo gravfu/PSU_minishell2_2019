@@ -33,8 +33,10 @@ int my_putstr_error(char const *str)
 int my_error_handle(char *command, char *not_found, int error)
 {
     my_putstr_error("mysh: ");
+    if (command[0] == '\0') {
     my_putstr_error(command);
     my_putstr_error(": ");
+    }
     my_putstr_error(not_found);
     my_putstr_error(": ");
     if (error == -1)
