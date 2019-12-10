@@ -12,6 +12,7 @@ FLAGS		=	-Werror -Wall -Wextra
 MAIN		=	main.c
 
 SRC		=	minishell.c \
+			exec_file.c \
 			minishell_text.c \
 			minishell_tools.c \
 			minishell_command.c \

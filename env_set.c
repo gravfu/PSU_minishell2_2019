@@ -1,3 +1,9 @@
+/*
+** EPITECH PROJECT, 2019
+** minishell.c
+** File description:
+** Minishell
+*/
 
 #include <stdlib.h>
 #include "include/env.h"

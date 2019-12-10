@@ -19,7 +19,9 @@ void reset_buffer(char *buffer, int size)
 
 char *my_cat(char *str1, char *str2)
 {
-    char *new_str = malloc(sizeof(char) * (my_strlen(str1) + my_strlen(str2) + 3));
+    int size1 = my_strlen(str1);
+    int size2 = my_strlen(str2);
+    char *new_str = malloc(sizeof(char) * (size1 + size2 + 3));
     int i = 0;
 
     for (int j = 0; j < my_strlen(str1); i++, j++)

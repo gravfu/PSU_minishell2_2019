@@ -16,8 +16,9 @@ int env_nb_word(char *str)
     int j = 0;
     int i = 0;
     for (i = 0; str[i] != '\0'; i++) {
-        if (str[i] != ':')
+        if (str[i] == ':') {
             j++;
+        }
     }
     if (i = 0)
         return 0;
@@ -29,13 +30,17 @@ char **env_str_word_array(char *str)
     int nb_words = env_nb_word(str);
     char **words =  malloc(sizeof(char *) * (nb_words + 1));
     int len;
+    int i = 0;
+    int j = 0;
 
-    for (int i = 0; i < nb_words; i++) {
-        len = env_len_name(str);
-        words[i] = malloc(sizeof(char) * (len + 1));
-        words[i] = my_strncpy(words[i], str, len);
+    for (i = 0; str[i] != '\0'; i++) {
+        len = env_len_name(&str[i]);
+        words[j] = malloc(sizeof(char) * (len + 1));
+        words[j] = my_strncpy(words[j], &str[i], len);
+        j++;
         i += len;
     }
+    words[nb_words] = NULL;
     return words;
 }
 

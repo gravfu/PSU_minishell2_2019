@@ -15,7 +15,9 @@
 #include "include/env.h"
 
 int minishell_text(int ac, char **av);
+
 int *minishell_command(char **str, int read_var, char **env, int prev);
+
 void reset_buffer(char *buffer, int size);
 
 char *new_cmd(char *str)
@@ -36,11 +38,11 @@ char **read_commands(char *buffer, int readsize)
     int point = 0;
     char **argv = malloc(sizeof(char *) * 4096);
 
-    for(i = 0; i < readsize; i++) {
+    for (i = 0; i < readsize; i++) {
         if (buffer[i] != '\n' && buffer[i] != ' ') {
             argv[point] = new_cmd(&buffer[i]);
             point++;
-            for(; buffer[i] != '\n' && buffer[i] != ' ' && i < readsize; i++);
+            for (; buffer[i] != '\n' && buffer[i] != ' ' && i < readsize; i++);
         }
     }
     argv[point] = NULL;
@@ -61,7 +63,7 @@ int minishell_stand_imput(int fd, char **env)
         my_putstr("=(^-^)= ");
         reset_buffer(buffer, read_var);
         read_var = read(fd, buffer, 4096);
-        if(read_var > 1) {
+        if (read_var > 1) {
             argv = read_commands(buffer, read_var);
             exit_codes = minishell_command(argv, read_var, env, exit_codes[1]);
         }
@@ -75,8 +77,6 @@ int minishell(int ac, char **av, char **env_path)
     char **env = env_struct_init(env_path);
     if (ac == 1)
         return minishell_stand_imput(0, env);
-    else if (ac > 1)
-        return minishell_text(ac, av);
     else
         return 84;
     return 0;
