@@ -66,7 +66,7 @@ int minishell_stand_imput(int fd, char **env)
         reset_buffer(buffer, read_var);
         read_var = getline(&buffer, &size, stdin);
         //read_var = read(fd, buffer, 4096);
-        write(1, buffer, read_var);
+        //write(1, buffer, read_var);
         if (read_var > 1) {
             argv = read_commands(buffer, read_var);
             exit_codes = minishell_command(argv, read_var, env, exit_codes[1]);
