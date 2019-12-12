@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include "include/my.h"
 #include "include/env.h"
+#include <stdio.h>
 
 int minishell_text(int ac, char **av);
 
@@ -55,6 +56,7 @@ int minishell_stand_imput(int fd, char **env)
     int *exit_codes = malloc(sizeof(int)*2);
     char *buffer = malloc(sizeof(char) * 4097);
     char **argv;
+    size_t size = 4096;
 
     buffer[4096] = '\0';
     exit_codes[0] = 0;
@@ -62,7 +64,9 @@ int minishell_stand_imput(int fd, char **env)
     while (read_var > 0 && exit_codes[0] == 0) {
         my_putstr("=(^-^)= ");
         reset_buffer(buffer, read_var);
-        read_var = read(fd, buffer, 4096);
+        read_var = getline(&buffer, &size, stdin);
+        //read_var = read(fd, buffer, 4096);
+        write(1, buffer, read_var);
         if (read_var > 1) {
             argv = read_commands(buffer, read_var);
             exit_codes = minishell_command(argv, read_var, env, exit_codes[1]);
