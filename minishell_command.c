@@ -58,8 +58,8 @@ int *minishell_command(char **argv, int read_var, char **env, int prev)
     }
     if (my_strcmp("exit", argv[0]) == 0) {
         exit_function(argv, exit_codes, prev);
-    } else if (!(my_strcmp("env", argv[0])) || !(my_strcmp("set", argv[0]))
-                || !(my_strcmp("unset", argv[0]))
+    } else if (!(my_strcmp("setenv", argv[0])) || !(my_strcmp("setenv", argv[0]))
+                || !(my_strcmp("unsetenv", argv[0]))
                 || !(my_strcmp("cd", argv[0])))
         exit_codes[1] = env_exec(argv, env);
     else
