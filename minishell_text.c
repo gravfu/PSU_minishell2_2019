@@ -32,7 +32,7 @@ int my_putstr_error(char const *str)
 
 int my_error_handle(char *command, char *not_found, int error)
 {
-    my_putstr_error("mysh: ");
+    //my_putstr_error("mysh: ");
     if (command[0] == '\0') {
         my_putstr_error(command);
         my_putstr_error(": ");
@@ -43,6 +43,7 @@ int my_error_handle(char *command, char *not_found, int error)
         my_putstr_error("too many arguments");
     else
         my_putstr_error(strerror(errno));
+    my_putchar_error('.');
     my_putchar('\n');
     return 84;
 }

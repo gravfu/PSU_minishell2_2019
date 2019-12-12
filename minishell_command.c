@@ -22,11 +22,11 @@ int env_exec (char **argv, char **env)
         env_print(env);
         error = 0;
     }
-    if (!(my_strcmp("set", argv[0])) && argv[1] && argv[2] && !argv[3]) {
+    if (!(my_strcmp("setenv", argv[0])) && argv[1] && argv[2] && !argv[3]) {
         env = searsh_and_add_in_env(env, argv[1], argv[2]);
         error = 0;
     }
-    if (!(my_strcmp("unset", argv[0])) && argv[1] && !argv[2]) {
+    if (!(my_strcmp("unsetenv", argv[0])) && argv[1] && !argv[2]) {
         error = searsh_and_del_in_env(env, argv[1]);
     }
     if (!(my_strcmp("cd", argv[0])))
