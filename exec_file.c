@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/signal.h>
 #include <unistd.h>
 #include <errno.h>
 #include "include/my.h"
@@ -30,11 +31,20 @@ int minishell_execute3(char **argv, char *final_path, char **env)
                 exit_code = execve(final_path, argv, env);
             else {
                 wait(&exit_code);
-                exit_code = WEXITSTATUS(exit_code);
+                
+                if (WIFSIGNALED(exit_code))
+                    if (WTERMSIG(exit_code) == 11)
+                        my_putstr_error("Segmentation fault\n");
+                else
+                    exit_code = 0;
             }
-        }
+        } else
+            exit_code = 1;    
+    } else{
+        exit_code = -1;
     }
-    return errno;
+    
+    return exit_code;
 }
 
 int minishell_execute2(char **argv, char *path, char **env)
@@ -56,12 +66,13 @@ int minishell_execute2(char **argv, char *path, char **env)
 int minishell_execute(char **argv, char *path, char **env)
 {
     char **tmp = searsh_in_env(env, "PATH");
-    int continu = 127;
+    int continu;
     char *str1 = my_strdup(argv[0]);
     int exit_code = 0;
     errno = 0;
-    if (minishell_execute2(argv, path, env) != 0) {
-        for (int i = 0; tmp[i] != NULL && continu != 0; i++) {
+    continu = minishell_execute2(argv, path, env);
+    if (continu == -1) {
+        for (int i = 0; tmp[i] != NULL && continu == -1; i++) {
             errno = 0;
             my_strcat(tmp[i], "/");
             my_strcat(tmp[i], str1);
@@ -69,7 +80,9 @@ int minishell_execute(char **argv, char *path, char **env)
             continu = minishell_execute2(argv, path, env);
         }
     }
+    if (continu = -1)
+        continu = 1;
     if (errno != 0)
-            my_error_handle("", argv[0], errno);
+            my_error_handle(NULL, argv[0], errno);
     return errno;
 }
