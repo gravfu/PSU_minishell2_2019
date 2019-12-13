@@ -38,6 +38,7 @@ int searsh_and_del_in_env(char **env, char const *first)
     for (i = 0; env[i] != NULL; i++) {
         len_word = env_len_name(env[i]);
         if (my_strncmp(env[i], first, len_word) == 0 || found == 1) {
+            found = 1;
             env[i] = env[i+1];
         }
     }
