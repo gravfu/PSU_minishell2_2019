@@ -25,7 +25,7 @@ int my_cd(char **argv, char **env)
         path = home_dir[0];
     else
         path = argv[1];
-    if (!my_strcmp(argv[1], "-") && oldpwd != NULL)
+    if (argv[1] && !my_strcmp(argv[1], "-") && oldpwd != NULL)
         path = oldpwd[0];
     if (argv[1] && argv[2]) {
         my_error_handle("cd", argv[1], -1);

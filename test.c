@@ -2,5 +2,5 @@
 
 int main(int argc, char **argv)
 {
-    return argv[argc+5000000];
+    return 100/0;
 }

@@ -39,7 +39,9 @@ int my_error_handle(char *command, char *not_found, int error)
     }
     my_putstr_error(not_found);
     my_putstr_error(": ");
-    if (error == -1)
+    if (error == 8)
+        my_putstr_error("Exec format error. Wrong Architecture");
+    else if (error == -1)
         my_putstr_error("too many arguments");
     else
         my_putstr_error(strerror(errno));

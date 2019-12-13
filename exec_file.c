@@ -31,19 +31,23 @@ int minishell_execute3(char **argv, char *final_path, char **env)
                 exit_code = execve(final_path, argv, env);
             else {
                 wait(&exit_code);
-                
                 if (WIFSIGNALED(exit_code))
                     if (WTERMSIG(exit_code) == 11)
                         my_putstr_error("Segmentation fault\n");
+                    if (WTERMSIG(exit_code) == 8)
+                        my_putstr_error("Floating exception\n");
                 else
                     exit_code = 0;
             }
-        } else
+        } else {
+            my_putstr_error(argv[0]);
+            my_putstr_error(": ");
+            my_putstr_error("Permission denied.\n");
             exit_code = 1;    
+        }
     } else{
-        exit_code = -1;
+        exit_code = 1;
     }
-    
     return exit_code;
 }
 
@@ -71,8 +75,8 @@ int minishell_execute(char **argv, char *path, char **env)
     int exit_code = 0;
     errno = 0;
     continu = minishell_execute2(argv, path, env);
-    if (continu == -1) {
-        for (int i = 0; tmp[i] != NULL && continu == -1; i++) {
+    if (errno == 2) {
+        for (int i = 0; tmp[i] != NULL && errno == 2; i++) {
             errno = 0;
             my_strcat(tmp[i], "/");
             my_strcat(tmp[i], str1);
@@ -80,8 +84,6 @@ int minishell_execute(char **argv, char *path, char **env)
             continu = minishell_execute2(argv, path, env);
         }
     }
-    if (continu = -1)
-        continu = 1;
     if (errno != 0)
             my_error_handle(NULL, argv[0], errno);
     return errno;
