@@ -9,12 +9,14 @@
 #include "include/env.h"
 #include "include/my.h"
 
+char *my_cat(char *str1, char *str2);
+
 char **searsh_and_add_in_env(char **env, char *first, char const *to_add)
 {
     int i;
     int len_word;
 
-    for (i = 0; env[i] != NULL; i++) {
+    for (i = 0; env[i]; i++) {
         len_word = env_len_name(env[i]);
         if (my_strncmp(env[i], first, len_word) == 0) {
             my_strcat(env[i], ":");
@@ -22,10 +24,12 @@ char **searsh_and_add_in_env(char **env, char *first, char const *to_add)
             return env;
         }
     }
+    env[i] = malloc(sizeof(char) * 2);
     env[i] = my_strdup(first);
-    env[i] = my_strcat(first, "=");
-    env[i] = my_strcat(first, to_add);
+    env[i] = my_cat(env[i], "=");
+    env[i] = my_cat(env[i], my_strdup(to_add));
     env[i+1] = NULL;
+
     return env;
 }
 

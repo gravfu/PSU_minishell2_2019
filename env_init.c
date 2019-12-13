@@ -27,11 +27,11 @@ char **env_struct_init(char **env_table)
 {
     int i;
     int len_name = number_of_lines(env_table);
-    char **env = malloc(sizeof(char *) * (len_name + 1));
+    char **env = malloc(sizeof(char *) * (len_name + 100));
 
     for (i = 0; i < len_name; i++) {
         env[i] = my_strdup(env_table[i]);
     }
-    env[i] = NULL;
+    env[i+50] = NULL;
     return env;
 }
