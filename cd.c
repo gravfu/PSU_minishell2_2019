@@ -38,7 +38,6 @@ int my_cd(char **argv, char **env)
     } else {
         searsh_and_del_in_env(env, "OLDPWD");
         env = searsh_and_add_in_env(env, "OLDPWD\0", path_old);
-        printf("TEST\n");
     }
     return 0;
 }

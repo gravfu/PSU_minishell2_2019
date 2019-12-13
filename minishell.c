@@ -26,7 +26,8 @@ char *new_cmd(char *str)
     int i;
     char *cmd = malloc(sizeof(char) * 400);
 
-    for (i = 0; str[i] != '\n' && str[i] != ' ' && str[i] != '\0'; i++) {
+    for (i = 0; str[i] != '\n' && str[i] != '\t'
+    && str[i] != ' ' && str[i] != '\0'; i++) {
         cmd[i] = str[i];
     }
     cmd[i] = '\0';
@@ -40,10 +41,11 @@ char **read_commands(char *buffer, int readsize)
     char **argv = malloc(sizeof(char *) * 4096);
 
     for (i = 0; i < readsize; i++) {
-        if (buffer[i] != '\n' && buffer[i] != ' ') {
+        if (buffer[i] != '\n' && buffer[i] != ' ' && buffer[i] != '\t') {
             argv[point] = new_cmd(&buffer[i]);
             point++;
-            for (; buffer[i] != '\n' && buffer[i] != ' ' && i < readsize; i++);
+            for (; buffer[i] != '\n' && buffer[i] != ' '
+            && i < readsize && buffer[i] != '\t'; i++);
         }
     }
     argv[point] = NULL;
