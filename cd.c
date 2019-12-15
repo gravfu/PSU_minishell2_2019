@@ -28,10 +28,9 @@ int my_cd(char **argv, char **env)
     char **oldpwd = searsh_in_env(env, "OLDPWD");
     char *path = NULL;
     char path_old[256];
+    path = argv[1];
     if (argv[1] == NULL)
         path = home_dir[0];
-    else
-        path = argv[1];
     if (argv[1] && !my_strcmp(argv[1], "-") && oldpwd != NULL)
         path = oldpwd[0];
     if (my_cd_two(argv) == 84)
