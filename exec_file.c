@@ -19,11 +19,29 @@ char *my_cat(char *str1, char *str2);
 
 int char_in_array(char c, char *str);
 
+int minishell_execute4(int exit_code)
+{
+    if (WIFSIGNALED(exit_code))
+        if (WTERMSIG(exit_code) == 11)
+            my_putstr_error("Segmentation fault\n");
+        if (WTERMSIG(exit_code) == 8)
+            my_putstr_error("Floating exception\n");
+    else
+        exit_code = 0;
+    return exit_code;
+}
+
+void minishell_exec_error(char **argv)
+{
+    my_putstr_error(argv[0]);
+    my_putstr_error(": ");
+    my_putstr_error("Permission denied.\n");
+}
+
 int minishell_execute3(char **argv, char *final_path, char **env)
 {
     struct stat st;
     int exit_code = 0;
-
     if (stat(argv[0], &st) == 0 && char_in_array('/', argv[0])) {
         if ((st.st_mode & S_IXUSR) && (st.st_mode & __S_IFREG)) {
             pid_t childpid = fork();
@@ -31,23 +49,14 @@ int minishell_execute3(char **argv, char *final_path, char **env)
                 exit_code = execve(final_path, argv, env);
             else {
                 wait(&exit_code);
-                if (WIFSIGNALED(exit_code))
-                    if (WTERMSIG(exit_code) == 11)
-                        my_putstr_error("Segmentation fault\n");
-                    if (WTERMSIG(exit_code) == 8)
-                        my_putstr_error("Floating exception\n");
-                else
-                    exit_code = 0;
+                return minishell_execute4(exit_code);
             }
         } else {
-            my_putstr_error(argv[0]);
-            my_putstr_error(": ");
-            my_putstr_error("Permission denied.\n");
+            minishell_exec_error(argv);
             exit_code = 1;    
         }
-    } else{
+    } else
         exit_code = 1;
-    }
     return exit_code;
 }
 
@@ -73,7 +82,6 @@ int minishell_execute(char **argv, char *path, char **env)
     int continu;
     char *str1 = my_strdup(argv[0]);
     int exit_code = 0;
-    errno = 0;
     continu = minishell_execute2(argv, path, env);
     if (errno == 2) {
         for (int i = 0; tmp[i] != NULL && errno == 2; i++) {
@@ -86,5 +94,5 @@ int minishell_execute(char **argv, char *path, char **env)
     }
     if (errno != 0)
             my_error_handle(NULL, argv[0], errno);
-    return errno;
+    return continu;
 }

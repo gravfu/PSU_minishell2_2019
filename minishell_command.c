@@ -29,8 +29,10 @@ int env_exec (char **argv, char **env)
     if (!(my_strcmp("unsetenv", argv[0])) && argv[1] && !argv[2]) {
         error = searsh_and_del_in_env(env, argv[1]);
     }
-    if (!(my_strcmp("cd", argv[0])))
+    if (!(my_strcmp("cd", argv[0]))) {
+        errno = 0;
         error = my_cd(argv, env);
+    }
     return error;
 }
 
