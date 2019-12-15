@@ -6,3 +6,4 @@
 */
 
 int my_error_handle(char *command, char *not_found, int error);
+int my_putstr_error(char const *str);
