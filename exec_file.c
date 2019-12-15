@@ -53,7 +53,7 @@ int minishell_execute3(char **argv, char *final_path, char **env)
             }
         } else {
             minishell_exec_error(argv);
-            exit_code = 1;    
+            exit_code = 1;
         }
     } else
         exit_code = 1;
@@ -67,7 +67,7 @@ int minishell_execute2(char **argv, char *path, char **env)
     char *newenviron[] = { NULL };
     char *final_path;
     errno = 0;
-    if (argv[0][0] == '/') 
+    if (argv[0][0] == '/')
         final_path = argv[0];
     else {
         final_path = my_cat(my_cat(path, "/"), argv[0]);

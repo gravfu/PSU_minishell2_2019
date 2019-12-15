@@ -15,7 +15,7 @@
 
 int minishell_execute(char **argv, char *path, char **env);
 
-int env_exec (char **argv, char **env)
+int env_exec(char **argv, char **env)
 {
     int error = 84;
     if (!(my_strcmp("env", argv[0])) && argv[1] == NULL ||
