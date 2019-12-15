@@ -21,13 +21,13 @@ int char_in_array(char c, char *str);
 
 int minishell_execute4(int exit_code)
 {
-    if (WIFSIGNALED(exit_code))
+    if (WIFSIGNALED(exit_code)) {
         if (WTERMSIG(exit_code) == 11)
             my_putstr_error("Segmentation fault\n");
         if (WTERMSIG(exit_code) == 8)
             my_putstr_error("Floating exception\n");
-    else
-        exit_code = 0;
+    }
+    exit_code = 0;
     return exit_code;
 }
 
