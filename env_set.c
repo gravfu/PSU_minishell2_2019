@@ -18,7 +18,7 @@ char **searsh_and_add_in_env(char **env, char *first, char const *to_add)
 
     for (i = 0; env[i]; i++) {
         len_word = env_len_name(env[i]);
-        if (my_strncmp(env[i], first, len_word) == 0) {
+        if (to_add != NULL && (my_strncmp(env[i], first, len_word) == 0)) {
             my_strcat(env[i], ":");
             my_strcat(env[i], to_add);
             return env;
@@ -27,9 +27,9 @@ char **searsh_and_add_in_env(char **env, char *first, char const *to_add)
     env[i] = malloc(sizeof(char) * 2);
     env[i] = my_strdup(first);
     env[i] = my_cat(env[i], "=");
-    env[i] = my_cat(env[i], my_strdup(to_add));
+    if (to_add)
+        env[i] = my_cat(env[i], my_strdup(to_add));
     env[i+1] = NULL;
-
     return env;
 }
 

@@ -18,11 +18,13 @@ int minishell_execute(char **argv, char *path, char **env);
 int env_exec (char **argv, char **env)
 {
     int error = 84;
-    if (!(my_strcmp("env", argv[0])) && argv[1] == NULL) {
+    if (!(my_strcmp("env", argv[0])) && argv[1] == NULL ||
+        (!(my_strcmp("setenv", argv[0])) && !argv[1])) {
         env_print(env);
         error = 0;
     }
-    if (!(my_strcmp("setenv", argv[0])) && argv[1] && argv[2] && !argv[3]) {
+    if (!(my_strcmp("setenv", argv[0])) && argv[1] && !argv[3]) {
+        searsh_and_del_in_env(env, argv[1]);
         env = searsh_and_add_in_env(env, argv[1], argv[2]);
         error = 0;
     }
